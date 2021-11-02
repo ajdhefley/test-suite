@@ -1,0 +1,24 @@
+{
+  "name": "@ajdhefley/angular-test-suite",
+  "author": "Ashton Hefley",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "./node_modules/typescript/bin/tsc --project tsconfig.json",
+    "build:test": "./node_modules/typescript/bin/tsc --project tsconfig.spec.json",
+    "test": "./node_modules/jasmine/bin/jasmine.js --config=jasmine.json"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.10.1",
+    "jasmine": "^3.10.0",
+    "jasmine-core": "^3.10.1"
+  },
+  "dependencies": {
+    "@angular/core": "^12.2.12",
+    "jasmine-node": "^3.0.0",
+    "rxjs": "^7.4.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4"
+  }
+}
