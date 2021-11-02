@@ -1,0 +1,1 @@
+export type TestSuiteType = 'component' | 'service';
