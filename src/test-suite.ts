@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TestSuiteMockMapper } from './test-suite-mock-mapper';
+import { TestMockMapper } from './test-mock-mapper';
 
 export type TestSuiteType = 'component' | 'service';
 
@@ -10,7 +10,7 @@ export class TestSuite<TClass> {
     private customProviders = new Array<any>();
     private mockProviders = new Array<any>();
     private callbacks = new Array<() => void>();
-    private mockMapper = new TestSuiteMockMapper();
+    private mockMapper = new TestMockMapper();
 
     private class: TClass;
     private initialized: boolean;
@@ -46,7 +46,7 @@ export class TestSuite<TClass> {
         return this;
     }
 
-    addTestCase(description: string, callback: (classInstance: TClass, mocks: TestSuiteMockMapper) => void, excludeOthers?: boolean): TestSuite<TClass> {
+    addTestCase(description: string, callback: (classInstance: TClass, mocks: TestMockMapper) => void, excludeOthers?: boolean): TestSuite<TClass> {
         this.callbacks.push(() => {
             if (excludeOthers) {
                 fit(description, () => callback(this.class, this.mockMapper));
@@ -59,7 +59,7 @@ export class TestSuite<TClass> {
         return this;
     }
 
-    beforeEach(callback: (classInstance: TClass, mocks: TestSuiteMockMapper) => void): TestSuite<TClass> {
+    beforeEach(callback: (classInstance: TClass, mocks: TestMockMapper) => void): TestSuite<TClass> {
         if (!this.initialized) {
             this.initialized = true;
 
@@ -95,7 +95,7 @@ export class TestSuite<TClass> {
         return this;
     }
 
-    afterEach(callback: (classInstance: TClass, mocks: TestSuiteMockMapper) => void): TestSuite<TClass> {
+    afterEach(callback: (classInstance: TClass, mocks: TestMockMapper) => void): TestSuite<TClass> {
         this.callbacks.push(() => {
             afterEach(() => callback(this.class, this.mockMapper));
         });

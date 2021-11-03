@@ -1,14 +1,14 @@
 import { mockService } from './test-mock';
-import { TestSuiteMockMapper } from './test-suite-mock-mapper';
+import { TestMockMapper } from './test-mock-mapper';
 
 class FakeService {
 
 }
 
-describe('test-mock.ts', () => {
-    it('TestSuiteMockMapper should return mocked service', () => {
+describe('test-mock-mapper.ts', () => {
+    it('TestMockMapper should return mocked service', () => {
         //Arrange
-        let mapper = new TestSuiteMockMapper();
+        let mapper = new TestMockMapper();
         mapper.add(FakeService);
 
         //Act

@@ -1,6 +1,6 @@
 # angular-test-suite
 
-Encapsulates the standard boilerplate code of Jasmine tests in Angular, improving test design and making tests easier to read/write.
+Encapsulates standard boilerplate code of Jasmine tests in Angular, improving test design and making tests easier to read/write.
 
 1. Significantly reduces the size of spec files, typically by over 50%.
 2. Eliminates need for global variables by injecting component/service and mocks into each test.

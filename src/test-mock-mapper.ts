@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { MockOf } from './test-mock';
 import { mockService } from './test-mock';
 
-export class TestSuiteMockMapper {
+export class TestMockMapper {
     private mocks = {};
 
     add(type: Type<any>) {
