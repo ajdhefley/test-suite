@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "noEmitOnError": true,
+        "removeComments": false,
+        "sourceMap": false,
+        "target": "es2017",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "outDir": "test",
+        "rootDir": "src",
+        "types": ["jasminewd2"]
+    },
+    "include": [
+        "src/**/*.spec.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+  }

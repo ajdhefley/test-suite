@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "^3.10.1",
+    "@types/jasminewd2": "^2.0.10",
     "jasmine": "^3.10.0",
     "jasmine-core": "^3.10.1"
   },

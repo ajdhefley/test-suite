@@ -3,7 +3,7 @@ import { MockOf } from './test-mock';
 import { mockService } from './test-mock';
 
 export class TestSuiteMockMapper {
-    private mocks: any;
+    private mocks = {};
 
     add(type: Type<any>) {
         this.mocks[type.name] = mockService(type);

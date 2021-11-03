@@ -1,121 +1,120 @@
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TestSuiteType } from './test-suite-type';
 import { TestSuiteMockMapper } from './test-suite-mock-mapper';
 
-export class TestSuite<TFixture> {
+export type TestSuiteType = 'component' | 'service';
+
+export class TestSuite<TClass> {
     private declarations = new Array<any>();
     private imports = new Array<any>();
-    private providers = new Array<any>();
+    private customProviders = new Array<any>();
     private mockProviders = new Array<any>();
-    private specDefinitions = new Array<() => void>();
+    private callbacks = new Array<() => void>();
     private mockMapper = new TestSuiteMockMapper();
 
-    private fixture: TFixture;
+    private class: TClass;
     private initialized: boolean;
 
-    constructor(private fixtureType: Type<TFixture>, private testType: TestSuiteType, private excludeOthers?: boolean) { }
+    constructor(private classType: Type<TClass>, private testType: TestSuiteType, private excludeOthers?: boolean) { }
 
-    addDeclarations(...declarations: any[]): TestSuite<TFixture> {
+    addDeclarations(...declarations: any[]): TestSuite<TClass> {
         this.declarations.push(...declarations);
         return this;
     }
 
-    addImports(...imports: any[]): TestSuite<TFixture> {
+    addImports(...imports: any[]): TestSuite<TClass> {
         this.imports.push(...imports);
         return this;
     }
 
-    addProviders(...providers: any[]): TestSuite<TFixture> {
-        this.providers.push(...providers);
+    addProviders(...providers: any[]): TestSuite<TClass> {
+        this.customProviders.push(...providers);
         return this;
     }
 
-    addMocks(...services: Type<any>[]): TestSuite<TFixture> {
-        this.specDefinitions.push(() => beforeEach(() => {
-            this.mockProviders = [];
-            services.forEach((service) => {
-                this.mockMapper.add(service);
-                this.mockProviders.push({ provide: service, useValue: this.mockMapper.get(service) });
+    addMocks(...services: Type<any>[]): TestSuite<TClass> {
+        this.callbacks.push(() => {
+            beforeEach(() => {
+                this.mockProviders = [];
+                services.forEach((service) => {
+                    this.mockMapper.add(service);
+                    this.mockProviders.push({ provide: service, useValue: this.mockMapper.get(service) });
+                });
             });
-        }));
+        });
+
         return this;
     }
 
-    addTestCase(description: string, specDefinition: (fixture: TFixture, mocks: TestSuiteMockMapper) => void, excludeOthers?: boolean): TestSuite<TFixture> {
-        this.specDefinitions.push(() => {
+    addTestCase(description: string, callback: (classInstance: TClass, mocks: TestSuiteMockMapper) => void, excludeOthers?: boolean): TestSuite<TClass> {
+        this.callbacks.push(() => {
             if (excludeOthers) {
-                fit(description, () => specDefinition(this.fixture, this.mockMapper));
+                fit(description, () => callback(this.class, this.mockMapper));
             }
             else {
-                it(description, () => specDefinition(this.fixture, this.mockMapper));
+                it(description, () => callback(this.class, this.mockMapper));
             }
         });
+
         return this;
     }
 
-    afterEach(definition: (fixture: TFixture, mocks: TestSuiteMockMapper) => void): TestSuite<TFixture> {
-        this.specDefinitions.push(() => afterEach(() => definition(this.fixture, this.mockMapper)));
-        return this;
-    }
-
-    beforeEach(customInitialization?: (fixture: TFixture, mocks: TestSuiteMockMapper) => void): TestSuite<TFixture> {
+    beforeEach(callback: (classInstance: TClass, mocks: TestSuiteMockMapper) => void): TestSuite<TClass> {
         if (!this.initialized) {
             this.initialized = true;
 
-            if (this.testType == 'component') {
-                // Tested components declare themselves by default.
-                this.declarations.push(this.fixtureType);
-            }
+            this.callbacks.push(() => {
+                beforeEach(async () => {
+                    switch (this.testType) {
+                        case 'component': {
+                            // Tested components declare themselves by default.
+                            this.declarations.push(this.classType);
 
-            this.specDefinitions.push(() => beforeEach(async () => {
-                let testBedModule = await TestBed.configureTestingModule({
-                    declarations: this.declarations,
-                    imports: this.imports,
-                    providers: this.providers.concat(this.mockProviders)
+                            await TestBed.configureTestingModule({
+                                declarations: this.declarations,
+                                imports: this.imports,
+                                providers: this.customProviders.concat(this.mockProviders)
+                            }).compileComponents();
+
+                            let componentFixture = TestBed.createComponent(this.classType);
+                            this.class = componentFixture.componentInstance;
+                            callback(this.class, this.mockMapper);
+        
+                            // Trigger the component lifecycle prior to the tests.
+                            componentFixture.detectChanges();
+                        }
+                        case 'service': {
+                            this.class = TestBed.inject(this.classType);
+                            callback(this.class, this.mockMapper);
+                        }
+                    }
                 });
-
-                if (this.testType == 'component') {
-                    testBedModule.compileComponents();
-
-                    let componentWrapper = TestBed.createComponent(this.fixtureType);
-                    this.fixture = componentWrapper.componentInstance;
-
-                    if (customInitialization) {
-                        // Provide the component and mocks to the initializer.
-                        customInitialization(this.fixture, this.mockMapper);
-                    }
-
-                    // Trigger the component lifecycle last, after all other initialization.
-                    componentWrapper.detectChanges();
-                }
-
-                if (this.testType == 'service') {
-                    this.fixture = TestBed.inject(this.fixtureType);
-
-                    if (customInitialization) {
-                        customInitialization(this.fixture, this.mockMapper);
-                    }
-                }
-            }));
+            });
         }
+
+        return this;
+    }
+
+    afterEach(callback: (classInstance: TClass, mocks: TestSuiteMockMapper) => void): TestSuite<TClass> {
+        this.callbacks.push(() => {
+            afterEach(() => callback(this.class, this.mockMapper));
+        });
 
         return this;
     }
 
     run() {
-        if (!this.initialized) {
-            this.beforeEach();
-        }
+        // Call here in case not called externally, to ensure test bed is initialized.
+        this.beforeEach(() => {});
 
         if (this.excludeOthers) {
-            fdescribe(this.fixtureType.name, () => {
-                this.specDefinitions.forEach((specDefinition) => specDefinition());
+            fdescribe(this.classType.name, () => {
+                this.callbacks.forEach((callback) => callback());
             });
         }
         else {
-            describe(this.fixtureType.name, () => {
-                this.specDefinitions.forEach((specDefinition) => specDefinition());
+            describe(this.classType.name, () => {
+                this.callbacks.forEach((callback) => callback());
             });
         }
     }
