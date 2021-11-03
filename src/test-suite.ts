@@ -46,7 +46,7 @@ export class TestSuite<TClass> {
         return this;
     }
 
-    addTestCase(description: string, callback: (classInstance: TClass, mocks: TestMockMapper) => void, excludeOthers?: boolean): TestSuite<TClass> {
+    addSpec(description: string, callback: (classInstance: TClass, mocks: TestMockMapper) => void, excludeOthers?: boolean): TestSuite<TClass> {
         this.callbacks.push(() => {
             if (excludeOthers) {
                 fit(description, () => callback(this.class, this.mockMapper));

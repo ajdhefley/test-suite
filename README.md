@@ -3,7 +3,7 @@
 Encapsulates standard boilerplate code of Jasmine tests in Angular, improving test design and making tests easier to read/write.
 
 1. Significantly reduces the size of spec files, typically by over 50%.
-2. Eliminates need for global variables and state management by injecting component/service and mocks into each test.
+2. Eliminates need for global variables by injecting component/service and mocks into each callback, isolating each test.
 
 ### Example
 
@@ -57,13 +57,13 @@ new TestSuite(TestedComponent, 'component')
     .addImports(FormsModule)
     .addDeclarations(MyDeclaredComponent, MyOtherDeclaredComponent)
     .addMocks(MyFactory, ComponentOptions)
+    .addSpec('should', (component, mocks) => {
+        component.factoryObj = mocks.get(MyFactory).getFactoryObject();
+        ...
+    })
     .beforeEach((component, mocks) => {
         mocks.get(ComponentOptions).getOption.and.returnValue(...);
         component.options = mocks.get(ComponentOptions);
     })
-    .addTestCase('should', (component, mocks) => {
-        component.factoryObj = mocks.get(MyFactory).getFactoryObject();
-        ...
-    });
-}).run();
+    .run();
 ```
