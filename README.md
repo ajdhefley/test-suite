@@ -1,6 +1,6 @@
 # ajdhefley/test-suite
 
-Encapsulates standard boilerplate code of Angular and NestJS tests written in Jest, improving test design and making tests easier to read and write.
+Encapsulates standard boilerplate code of Angular/NestJS tests (Jest), improving design and making them easier to read and write.
 
 1. Reduces the size of spec files as well as time spent creating and maintaining them, enabling greater test coverage with less effort.
 2. Eliminates need for global variables by injecting component/service and mocks into each callback, isolating each test.
@@ -38,12 +38,12 @@ describe('TestedComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(TestedComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();s
+        fixture.detectChanges();
         component.options = mockComponentOptions;
     });
 
     it('should', () => {
-        spyOn(mockFactory.getFactoryObject).and.returnValue(of());
+        mockFactory.getFactoryObject = jest.fn().mockreturnValue(of());
         component.factoryObj = mockFactory.getFactoryObject();
         ...
     });
@@ -62,7 +62,7 @@ new TestSuite(TestedComponent, 'component')
         ...
     })
     .beforeEach((component, mocks) => {
-        mocks.get(ComponentOptions).getOption.and.returnValue(...);
+        mocks.get(ComponentOptions).getOption.mockReturnValue(...);
         component.options = mocks.get(ComponentOptions);
     })
     .run();
