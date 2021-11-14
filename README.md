@@ -5,7 +5,7 @@ Encapsulates standard boilerplate code of Angular and NestJS tests written in Je
 1. Reduces the size of spec files as well as time spent creating and maintaining them, enabling greater test coverage with less effort.
 2. Eliminates need for global variables by injecting component/service and mocks into each callback, isolating each test.
 
-### Example
+### Examples
 
 ```
 describe('TestedComponent', () => {
@@ -67,3 +67,5 @@ new TestSuite(TestedComponent, 'component')
     })
     .run();
 ```
+
+See further examples [here](https://github.com/ajdhefley/ride-advisor).
