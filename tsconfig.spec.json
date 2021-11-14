@@ -10,7 +10,7 @@
         "esModuleInterop": true,
         "outDir": "test",
         "rootDir": "src",
-        "types": ["jasminewd2"]
+        "types": ["jest"]
     },
     "include": [
         "src/**/*.spec.ts"
