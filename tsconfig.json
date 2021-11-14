@@ -5,17 +5,14 @@
         "removeComments": false,
         "sourceMap": false,
         "target": "es2017",
-        "module": "amd",
+        "module": "commonjs",
         "moduleResolution": "node",
-        "esModuleInterop": true,
-        "outFile": "dist/index.js",
-        "rootDir": "src"
+        "outDir": "dist"
     },
     "include": [
-        "src/**/*"
+        "src/strategy"
     ],
     "exclude": [
-        "src/**/*.spec.ts",
         "node_modules"
     ]
   }

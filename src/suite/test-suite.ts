@@ -1,21 +1,20 @@
 import { Type } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { TestMockMapper } from './test-mock-mapper';
+import { TestMockMapper } from '../test-mock-mapper';
 
-export type TestSuiteType = 'component' | 'service';
-
-export class TestSuite<TClass> {
+export abstract class TestSuite<TClass> {
     private declarations = new Array<any>();
     private imports = new Array<any>();
     private customProviders = new Array<any>();
     private mockProviders = new Array<any>();
-    private callbacks = new Array<() => void>();
     private mockMapper = new TestMockMapper();
-
     private class: TClass;
+    
+    private callbacks = new Array<() => void>();
     private initialized: boolean;
 
-    constructor(private classType: Type<TClass>, private testType: TestSuiteType, private excludeOthers?: boolean) { }
+    protected abstract initializeTest(mockMapper: TestMockMapper, declarations: any[], imports: any[], providers: any[], callback: Function);
+
+    constructor(protected name: string, protected excludeOthers: boolean) { }
 
     addDeclarations(...declarations: any[]): TestSuite<TClass> {
         this.declarations.push(...declarations);
@@ -64,31 +63,13 @@ export class TestSuite<TClass> {
             this.initialized = true;
 
             this.callbacks.push(() => {
-                beforeEach(async () => {
-                    switch (this.testType) {
-                        case 'component': {
-                            // Tested components declare themselves by default.
-                            this.declarations.push(this.classType);
+                // Hijack the created class instance to inject into future callbacks.
+                let callbackWrapper = function(classInstance: TClass, mocks: TestMockMapper) {
+                    this.class = classInstance;
+                    callback(classInstance, mocks);
+                };
 
-                            await TestBed.configureTestingModule({
-                                declarations: this.declarations,
-                                imports: this.imports,
-                                providers: this.customProviders.concat(this.mockProviders)
-                            }).compileComponents();
-
-                            let componentFixture = TestBed.createComponent(this.classType);
-                            this.class = componentFixture.componentInstance;
-                            callback(this.class, this.mockMapper);
-        
-                            // Trigger the component lifecycle prior to the tests.
-                            componentFixture.detectChanges();
-                        }
-                        case 'service': {
-                            this.class = TestBed.inject(this.classType);
-                            callback(this.class, this.mockMapper);
-                        }
-                    }
-                });
+                beforeEach(async () => this.initializeTest(this.mockMapper, this.declarations, this.imports, this.customProviders.concat(this.mockProviders), callbackWrapper));
             });
         }
 
@@ -108,12 +89,12 @@ export class TestSuite<TClass> {
         this.beforeEach(() => {});
 
         if (this.excludeOthers) {
-            fdescribe(this.classType.name, () => {
+            fdescribe(this.name, () => {
                 this.callbacks.forEach((callback) => callback());
             });
         }
         else {
-            describe(this.classType.name, () => {
+            describe(this.name, () => {
                 this.callbacks.forEach((callback) => callback());
             });
         }
