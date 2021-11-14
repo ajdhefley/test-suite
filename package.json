@@ -1,5 +1,5 @@
 {
-  "name": "@ajdhefley/angular-test-suite",
+  "name": "@ajdhefley/test-suite",
   "author": "Ashton Hefley",
   "version": "1.0.0",
   "main": "dist/index.js",
