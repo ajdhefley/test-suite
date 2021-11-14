@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 
 export type MockOf<T> = T & {
-    [k in keyof T]: jasmine.Spy
+    [k in keyof T]: jest.Mock;
 };
 
 export function mockService<T>(serviceType: new (...args: any[]) => T): MockOf<T> {
@@ -12,7 +12,7 @@ export function mockService<T>(serviceType: new (...args: any[]) => T): MockOf<T
     Object.getOwnPropertyNames(serviceType.prototype)
         .filter((key) => key != 'constructor')
         .forEach((key) => {
-            res[key] = jasmine.createSpy(key).and.returnValue(of());
+            res[key] = jest.fn().mockReturnValue(of());
         });
 
     return res;
