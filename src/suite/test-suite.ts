@@ -64,12 +64,13 @@ export abstract class TestSuite<TClass> {
 
             this.callbacks.push(() => {
                 // Hijack the created class instance to inject into future callbacks.
-                let callbackWrapper = function(classInstance: TClass, mocks: TestMockMapper) {
+                let callbackWrapper = (classInstance: TClass, mocks: TestMockMapper) => {
                     this.class = classInstance;
-                    callback(classInstance, mocks);
+                    if (callback)
+                        callback(classInstance, mocks);
                 };
 
-                beforeEach(async () => this.initializeTest(this.mockMapper, this.declarations, this.imports, this.customProviders.concat(this.mockProviders), callbackWrapper));
+                beforeEach(async () => await this.initializeTest(this.mockMapper, this.declarations, this.imports, this.customProviders.concat(this.mockProviders), callbackWrapper));
             });
         }
 

@@ -1,6 +1,6 @@
 # ajdhefley/test-suite
 
-Encapsulates standard boilerplate code of Angular and NestJS tests written in Jasmine/Jest, improving test design and making tests easier to read and write.
+Encapsulates standard boilerplate code of Angular and NestJS tests written in Jasmine, improving test design and making tests easier to read and write.
 
 1. Reduces the size of spec files as well as time spent creating and maintaining them, enabling greater test coverage with less effort.
 2. Eliminates need for global variables by injecting component/service and mocks into each callback, isolating each test.

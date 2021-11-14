@@ -5,13 +5,13 @@ import { TestSuite } from './test-suite';
 
 export type AngularTestSuiteType = 'component' | 'service';
 
-export class AngularTestSuite<TClass> extends TestSuite<TClass> {
-    constructor(readonly classType: Type<TClass>, readonly testType: AngularTestSuiteType, excludeOthers: boolean = false) {
+export class AngularTestSuite<T> extends TestSuite<T> {
+    constructor(readonly classType: Type<T>, readonly testType: AngularTestSuiteType, excludeOthers: boolean = false) {
         super(classType.name, excludeOthers);
     }
 
-    protected initializeTest(mockMapper: TestMockMapper, declarations: any[], imports: any[], providers: any[], callback: Function) {
+    protected async initializeTest(mockMapper: TestMockMapper, declarations: any[], imports: any[], providers: any[], callback: Function) {
         let strategy = new AngularTestStrategy(this.testType, this.classType);
-        strategy.initialize(mockMapper, declarations, imports, providers, callback);
+        await strategy.initialize(mockMapper, declarations, imports, providers, callback);
     }
 }
