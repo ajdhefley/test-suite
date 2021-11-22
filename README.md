@@ -1,4 +1,4 @@
-# ajdhefley/test-suite
+# test-suite
 
 Encapsulates standard boilerplate code of Angular/NestJS tests (Jest), improving design and making them easier to read and write.
 
@@ -69,3 +69,11 @@ new TestSuite(TestedComponent, 'component')
 ```
 
 See further examples [here](https://github.com/ajdhefley/ride-advisor).
+
+## Building
+
+Run `npm run build` to build the npm package.
+
+## Testing
+
+Run `npm run test` to execute the tests (Jest).
