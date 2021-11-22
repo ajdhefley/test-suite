@@ -1,5 +1,9 @@
 import { of } from 'rxjs';
 
+export interface MockType<T> extends Function {
+    new(...args: any[]): T;
+}
+
 export type MockOf<T> = T & {
     [k in keyof T]: jest.Mock;
 };

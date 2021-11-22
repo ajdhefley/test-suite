@@ -1,4 +1,4 @@
-import { MockOf } from './test-mock';
+import { MockType, MockOf } from './test-mock';
 import { mockService } from './test-mock';
 
 export class TestMockMapper {
@@ -8,7 +8,7 @@ export class TestMockMapper {
         this.mocks[type.name] = mockService(type);
     }
 
-    get<TMock>(serviceType: TMock): MockOf<TMock> {
-        return this.mocks[(serviceType as any).name];
+    get<TMock>(serviceType: MockType<TMock>): MockOf<TMock> {
+        return this.mocks[serviceType.name];
     }
 }
