@@ -1,6 +1,6 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "moduleFileExtensions": ["js", "ts"],
+  "rootDir": "src",
   "testEnvironment": "node",
   "testRegex": ".spec.ts$",
   "transform": {
