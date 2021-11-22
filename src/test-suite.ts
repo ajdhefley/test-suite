@@ -1,5 +1,8 @@
-import { Type } from '@angular/core';
-import { TestMockMapper } from '../test-mock-mapper';
+import { TestMockMapper } from './test-mock-mapper';
+
+export abstract class TestSuiteStrategy {
+    abstract initialize(mockMapper: TestMockMapper, declarations: any[], imports: any[], providers: any[], callback: Function);
+}
 
 export abstract class TestSuite<TClass> {
     private declarations = new Array<any>();
@@ -31,7 +34,7 @@ export abstract class TestSuite<TClass> {
         return this;
     }
 
-    addMocks(...services: Type<any>[]): TestSuite<TClass> {
+    addMocks(...services: any[]): TestSuite<TClass> {
         this.callbacks.push(() => {
             beforeEach(() => {
                 this.mockProviders = [];

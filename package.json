@@ -2,10 +2,11 @@
   "name": "@ajdhefley/test-suite",
   "author": "Ashton Hefley",
   "version": "1.0.0",
+  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build": "tsc --declaration --project tsconfig.json",
     "test": "jest --config=jest.json"
   },
   "devDependencies": {
