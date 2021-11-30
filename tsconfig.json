@@ -1,19 +1,11 @@
 {
     "compilerOptions": {
         "declaration": true,
-        "noImplicitAny": false,
-        "noEmitOnError": true,
-        "removeComments": false,
-        "sourceMap": false,
         "target": "es2017",
         "module": "commonjs",
-        "moduleResolution": "node",
-        "outDir": "dist"
+        "moduleResolution": "node"
     },
-    "include": [
-        "src/"
-    ],
     "exclude": [
         "node_modules"
     ]
-  }
+}
