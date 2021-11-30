@@ -3,6 +3,8 @@
   "author": "Ashton Hefley",
   "version": "1.0.0",
   "private": true,
+  "main": "index.js",
+  "types": "index.d.ts",
   "devDependencies": {
     "@ajdhefley/test-suite": "git+https://github.com/ajdhefley/test-suite",
     "@nestjs/common": "^8.2.0",
