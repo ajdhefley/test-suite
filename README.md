@@ -6,6 +6,23 @@ Supports:
 * Angular 2+
 * NestJS
 
+## Usage
+
+Instantiate the framework suite (`AngularTestSuite`, `NestJsTestSuite`, `e2eNestJsTestSuite`). The component type is required as an argument for Angular and Nest test suites, along with either`'component'` or `'service'` in the case of Angular.
+
+The suite object fully supports method chaining, with the following available:
+
+* addImports
+* addDeclarations
+* addProviders
+* addMocks
+* addTest
+* beforeEach
+* afterEach
+* run
+
+`run` must be called to execute the tests. Additionally, an optional `excludeOthers` boolean may be passed as the final argument into either the suite or individual tests, to run only those tests.
+
 ### Examples
 
 ```
@@ -54,7 +71,7 @@ describe('TestedComponent', () => {
 becomes:
 
 ```
-new TestSuite(TestedComponent, 'component')
+new AngularTestSuite(TestedComponent, 'component')
     .addImports(FormsModule)
     .addDeclarations(MyDeclaredComponent, MyOtherDeclaredComponent)
     .addMocks(MyFactory, ComponentOptions)
