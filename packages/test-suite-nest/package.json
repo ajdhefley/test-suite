@@ -2,9 +2,11 @@
   "name": "@ajdhefley/test-suite-nest",
   "author": "Ashton Hefley",
   "version": "1.0.0",
-  "private": true,
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
     "@nestjs/common": "^8.2.0",
     "@nestjs/core": "^8.2.0",

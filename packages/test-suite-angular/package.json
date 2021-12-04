@@ -2,11 +2,16 @@
   "name": "@ajdhefley/test-suite-angular",
   "author": "Ashton Hefley",
   "version": "1.0.0",
-  "private": true,
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
+    "@angular/common": "^13.0.3",
     "@angular/core": "^13.0.2",
+    "@angular/platform-browser": "~13.0.0",
+    "@angular/platform-browser-dynamic": "~13.0.0",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.7"
   },

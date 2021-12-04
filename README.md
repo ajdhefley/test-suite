@@ -8,9 +8,9 @@ Supports:
 
 ## Usage
 
-Instantiate the framework suite (`AngularTestSuite`, `NestJsTestSuite`, `e2eNestJsTestSuite`). The component type is required as an argument for Angular and Nest test suites, along with either`'component'` or `'service'` in the case of Angular.
+Instantiate the framework suite (`AngularTestSuite`, `NestJsTestSuite`, `e2eNestJsTestSuite`), the component type being required as an argument for non-e2e test suites.
 
-The suite object fully supports method chaining, with the following available:
+Method chaining is fully supported, with the following methods available:
 
 * addImports
 * addDeclarations
@@ -21,9 +21,9 @@ The suite object fully supports method chaining, with the following available:
 * afterEach
 * run
 
-`run` must be called to execute the tests. Additionally, an optional `excludeOthers` boolean may be passed as the final argument into either the suite or individual tests, to run only those tests.
-
 ### Examples
+
+__Before:__
 
 ```
 describe('TestedComponent', () => {
@@ -68,14 +68,14 @@ describe('TestedComponent', () => {
 });
 ```
 
-becomes:
+__After:__
 
 ```
 new AngularTestSuite(TestedComponent, 'component')
     .addImports(FormsModule)
     .addDeclarations(MyDeclaredComponent, MyOtherDeclaredComponent)
     .addMocks(MyFactory, ComponentOptions)
-    .addSpec('should', (component, mocks) => {
+    .addTest('should', (component, mocks) => {
         component.factoryObj = mocks.get(MyFactory).getFactoryObject();
         ...
     })
@@ -84,52 +84,6 @@ new AngularTestSuite(TestedComponent, 'component')
         component.options = mocks.get(ComponentOptions);
     })
     .run();
-```
-
----
-
-```
-describe('ParkController (e2e)', () => {
-    let app: INestApplication;
-
-    beforeEach(async () => {
-        const moduleFixture: TestingModule = await Test.createTestingModule({
-            imports: [AppModule]
-        }).compile();
-
-        app = moduleFixture.createNestApplication();
-        await app.init();
-    });
-
-    it('/parks/:parkId/rides/ (GET) - 200', () => {
-        return request(app.getHttpServer())
-            .get('/parks/1/rides')
-            .expect(200)
-            .then((response) => {
-                const rideNames = response.body.map(res => res.name);
-                expect(rideNames).toContain('Possessed');
-                expect(rideNames).toContain('Steel Force');
-                expect(rideNames).toContain('Cedar Creek Flyers');
-            });
-    });
-});
-```
-
-becomes:
-
-```
-new e2eNestJSTestSuite('ParkController')
-    .addImports(AppModule)
-    .addSpec('/parks/:parkId/rides/ (GET) - 200', (app, get, post, put, delete) => {
-        return get('/parks/1/rides')
-            .expect(200)
-            .then((response) => {
-                const rideNames = response.body.map(res => res.name);
-                expect(rideNames).toContain('Possessed');
-                expect(rideNames).toContain('Steel Force');
-                expect(rideNames).toContain('Cedar Creek Flyers');
-            });
-    })
 ```
 
 ## Building
