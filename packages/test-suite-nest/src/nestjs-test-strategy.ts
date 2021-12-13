@@ -8,8 +8,8 @@ export class NestJSTestStrategy<T> extends TestSuiteStrategy {
 
     async initialize(mockMapper: TestMockMapper, declarations: any[], imports: any[], providers: any[], callback: Function) {
         const app: TestingModule = await Test.createTestingModule({
-            imports,
-            providers
+            imports: imports,
+            providers: providers.concat([this.classType])
         }).compile();
 
         let cls = app.get<T>(this.classType);
