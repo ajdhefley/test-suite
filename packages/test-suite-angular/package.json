@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@ajdhefley/test-suite": "file:../test-suite-core",
+    "@angular/compiler": "~13.0.0",
     "rxjs": "^7.4.0",
     "typescript": "^4.4.4"
   }
