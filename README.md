@@ -1,6 +1,6 @@
 # test-suite
 
-Encapsulates boilerplate code of framework tests written in Jest, improving design and readability.
+A library that improves the readability of JavaScript tests, by eliminating boilerplate and streamlining mocked dependencies / test case setup.
 
 Supports:
 * Angular 2+
@@ -75,13 +75,13 @@ new AngularTestSuite(TestedComponent, 'component')
     .addImports(FormsModule)
     .addDeclarations(MyDeclaredComponent, MyOtherDeclaredComponent)
     .addMocks(MyFactory, ComponentOptions)
-    .addTest('should', (component, mocks) => {
-        component.factoryObj = mocks.get(MyFactory).getFactoryObject();
-        ...
-    })
     .beforeEach((component, mocks) => {
         mocks.get(ComponentOptions).getOption.mockReturnValue(...);
         component.options = mocks.get(ComponentOptions);
+    })
+    .addTest('should', (component, mocks) => {
+        component.factoryObj = mocks.get(MyFactory).getFactoryObject();
+        ...
     })
     .run();
 ```
