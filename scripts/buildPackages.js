@@ -49,7 +49,7 @@ locatePackages(process.argv.slice(2))
     .then(async (packageFolders) => {
         // Ensure Core is built first. This is only necessary so long as the
         // packages reference each other in the file system and not in npm.
-        const core = packageFolders.find((folder) => folder.includes('test-suite-core'));
+        const core = packageFolders.find((folder) => folder.includes('slim-suite-core'));
         if (core) {
             packageFolders.splice(packageFolders.indexOf(core), 1);
             packageFolders.unshift(core);

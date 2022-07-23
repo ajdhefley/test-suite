@@ -1,6 +1,12 @@
-# test-suite
+# slim-suite
 
-A library that improves the readability of JavaScript tests, by eliminating boilerplate and streamlining mocked dependencies / test case setup.
+A library that makes Angular and NestJS tests simpler to read and write.
+
+* Encapsulates boilerplate code for test module setup
+* Streamlines mocking of dependencies by creating providers with spies behind the scenes
+* Provides an elegant method-chaining API
+* Can reduce old code by half or more
+* Greatly increases developer productivity with less time spent on tests
 
 Supports:
 * Angular 2+
@@ -92,4 +98,4 @@ Run `npm run build` to build the npm packages.
 
 ## Testing
 
-Run `npm run test` to execute the tests (Jest).
+Run `npm run test` to execute internal tests (Jest).
