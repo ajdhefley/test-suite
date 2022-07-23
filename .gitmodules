@@ -1,9 +1,9 @@
-[submodule "packages/test-suite-core"]
-	path = packages/test-suite-core
-	url = https://github.com/ajdhefley/test-suite-core
-[submodule "packages/test-suite-nest"]
-	path = packages/test-suite-nest
-	url = https://github.com/ajdhefley/test-suite-nest
-[submodule "packages/test-suite-angular"]
-	path = packages/test-suite-angular
-	url = https://github.com/ajdhefley/test-suite-angular
+[submodule "packages/slim-suite-core"]
+	path = packages/slim-suite-core
+	url = https://github.com/ajdhefley/slim-suite-core
+[submodule "packages/slim-suite-angular"]
+	path = packages/slim-suite-angular
+	url = https://github.com/ajdhefley/slim-suite-angular
+[submodule "packages/slim-suite-nest"]
+	path = packages/slim-suite-nest
+	url = https://github.com/ajdhefley/slim-suite-nest
